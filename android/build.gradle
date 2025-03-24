@@ -1,0 +1,67 @@
+group 'com.example.scgateway_flutter_plugin'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        maven {
+            url "https://artifactory.smallcase.com/artifactory/gradle-dev-local"
+            credentials {
+                username "flutter_plugin_user"
+                password "mobile@smallcase.com"
+            }
+        }
+        maven {
+            url "https://artifactory.smallcase.com/artifactory/SCGateway-internal"
+            credentials {
+                username "flutter_plugin_user"
+                password "mobile@smallcase.com"
+            }
+        }
+        maven {url "https://artifactory.smallcase.com/artifactory/SCGateway"}
+        google()
+        jcenter()
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion 33
+    namespace 'com.example.scgateway_flutter_plugin'
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+    defaultConfig {
+        minSdkVersion 21
+    }
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+//    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+//        kotlinOptions {
+//            jvmTarget = "1.8"
+//            freeCompilerArgs += ["-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check"]
+//        }
+//    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation "com.smallcase.gateway:sdk:4.2.2"
+}
